@@ -9,20 +9,20 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/Ag
 // 4. 在锁定期内，没有达到目标值，投资人在锁定期以后退款
 
 contract FundMe {
-    mapping(address => uint256) public fundersToAmount;
+    mapping(address => uint256) public fundersToAmount;  //记录投资人地址和投资代币数的映射
 
-    uint256 constant MINIMUM_VALUE = 100 * 10 ** 18; //USD
+    uint256 constant MINIMUM_VALUE = 1 * 10 ** 18; //USD
     
-    AggregatorV3Interface internal dataFeed;
+    AggregatorV3Interface internal dataFeed; //chainlink预言机提供的代币与真实货币兑换比例
 
-    uint256 constant TARGET = 1000 * 10 ** 18;
+    uint256 constant TARGET = 10 * 10 ** 18;
 
     address public owner;
 
     uint256 deploymentTimestamp;
     uint256 lockTime;
 
-    address erc20Addr;
+    address erc20Addr; //创建的继承erc20实现的代币合约的地址
 
     bool public getFundSuccess = false;
 
@@ -61,6 +61,7 @@ contract FundMe {
         owner = newOwner;
     }
 
+    // 只有合约创建者可以提款
     function getFund() external windowClosed onlyOwner{
         require(convertEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
         // transfer: transfer ETH and revert if tx failed
