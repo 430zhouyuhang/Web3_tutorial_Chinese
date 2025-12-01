@@ -61,7 +61,7 @@ contract FundMe {
         owner = newOwner;
     }
 
-    function getFund() external windowClosed onlyOwner{
+    function getFund() external payable windowClosed onlyOwner{
         require(convertEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
         // transfer: transfer ETH and revert if tx failed
         // payable(msg.sender).transfer(address(this).balance);
