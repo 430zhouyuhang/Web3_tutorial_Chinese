@@ -24,6 +24,7 @@ contract FundMe {
 
     address erc20Addr; //创建的继承erc20实现的代币合约的地址
 
+
     bool public getFundSuccess = false;
 
     constructor(uint256 _lockTime) {
@@ -63,6 +64,7 @@ contract FundMe {
 
     // 只有合约创建者可以提款
     function getFund() external windowClosed onlyOwner{
+
         require(convertEthToUsd(address(this).balance) >= TARGET, "Target is not reached");
         // transfer: transfer ETH and revert if tx failed
         // payable(msg.sender).transfer(address(this).balance);
